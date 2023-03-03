@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'Model/football_players.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,106 +14,64 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<footballPlayer> listFootballPlayers = [];
+  final titles = ["Item 1", "Item 2", "Item 3", "Item 4"];
+  final icons = [
+    Icons.ac_unit,
+    Icons.access_alarm,
+    Icons.access_time,
+    Icons.account_balance
+  ];
 
-  void addPlayers() {
-    setState(() {
-      listFootballPlayers.add(footballPlayer(
-          name: 'Lionel Messi', club: 'Paris Saint German', age: 33));
-      listFootballPlayers.add(footballPlayer(
-          name: 'Neymar Jr', club: 'Paris Saint German', age: 29));
-      listFootballPlayers.add(
-          footballPlayer(name: 'Cristiano Ronaldo', club: 'Juventus', age: 36));
-      listFootballPlayers
-          .add(footballPlayer(name: 'Abu Trika', club: 'El-Ahly', age: 40));
-    });
-  }
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: Text(widget.title),
-        ),
-        body: ListView.builder(
-          itemCount: listFootballPlayers.length,
-          itemBuilder: (context, index) {
-            return Card(
-              child: Container(
-                padding: const EdgeInsets.all(15.0),
-                child: Stack(
-                  children: [
-                    Text(
-                      listFootballPlayers[index].name,
-                      style: const TextStyle(
-                          fontSize: 30.0, fontWeight: FontWeight.bold),
-                    ),
-                    Positioned(
-                      right: 0,
-                      child: PopupMenuButton(
-                        onSelected: (value) {},
-                        itemBuilder: (context) => [
-                          PopupMenuItem(
-                            value: 1,
-                            child: Row(
-                              children: const <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Icon(Icons.edit),
-                                ),
-                                Text('data')
-                              ],
-                            ),
-                          ),
-                          PopupMenuItem(
-                            value: 2,
-                            child: Row(
-                              children: const <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Icon(Icons.share),
-                                ),
-                                Text('Share')
-                              ],
-                            ),
-                          ),
-                          PopupMenuItem(
-                            value: 3,
-                            child: Row(
-                              children: const <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Icon(Icons.delete),
-                                ),
-                                Text('Delete')
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
+      appBar: AppBar(
+        title: const Text('Players'),
+      ),
+      body: ListView.builder(
+        itemCount: titles.length,
+        itemBuilder: (context, index) {
+          return Card(
+            child: Container(
+              padding: const EdgeInsets.all(15.0),
+              child: ListTile(
+                title: Text(titles[index]),
+                leading: Icon(icons[index]),
+                trailing: PopupMenuButton<String>(
+                  onSelected: (value) {
+                    // Handle menu item selection
+                  },
+                  itemBuilder: (BuildContext context) {
+                    return ['Edit', 'Delete'].map((String choice) {
+                      return PopupMenuItem<String>(
+                        value: choice,
+                        child: Text(choice),
+                      );
+                    }).toList();
+                  },
                 ),
               ),
-            );
-          },
-        ));
+            ),
+          );
+        },
+      ),
+    );
   }
+
 }
